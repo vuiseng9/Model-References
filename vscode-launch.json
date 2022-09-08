@@ -57,7 +57,7 @@
             // },
             "type": "python",
             "request": "launch",
-            "cwd": "${workspaceFolder}/gaudi-perf",
+            "cwd": "${workspaceFolder}/Model-References/gaudi-perf",
             "program": "pt_perf_sample.py",
             "console": "integratedTerminal",
             "justMyCode": false

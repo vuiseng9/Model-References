@@ -5,12 +5,15 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 
 import shutil
-shutil.rmtree('runs', True)
+# shutil.rmtree('runs', True)
 
 #hpu specific
 from habana_frameworks.torch.utils.library_loader import load_habana_module
 load_habana_module()
 habana_device = torch.device("hpu")
+
+bPinMemory=False
+n_dataloader_worker=0 # 12 is a good number
 
 #general
 class NeuralNetwork(nn.Module):
@@ -34,12 +37,12 @@ model.train()
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
 training_data = datasets.FashionMNIST(
-    root="data",
+    root="/tmp/data",
     train=True,
     download=True,
     transform=ToTensor(),
 )
-train_dataloader = DataLoader(training_data, batch_size=64)
+train_dataloader = DataLoader(training_data, batch_size=64, pin_memory=bPinMemory, num_workers=n_dataloader_worker)
 activities = []
 activities.append(torch.profiler.ProfilerActivity.CPU)
 
@@ -50,7 +53,7 @@ activities.append(torch.profiler.ProfilerActivity.HPU)
 with torch.profiler.profile(
         activities=activities,
         schedule=torch.profiler.schedule(wait=0, warmup=20, active=5, repeat=1),
-        on_trace_ready=torch.profiler.tensorboard_trace_handler('./runs/fashion_mnist_experiment_1/'),
+        on_trace_ready=torch.profiler.tensorboard_trace_handler('./runs/hpu_prof_pinMem{}_nworker{}/'.format(int(bPinMemory), n_dataloader_worker)),
         record_shapes=True,
         with_stack=True) as prof:
     for batch, (X, y) in enumerate(train_dataloader):
