@@ -114,7 +114,7 @@ def main():
                         help='Use hpu device')
     parser.add_argument('--use_lazy_mode', action='store_true', default=False,
                         help='Enable lazy mode on hpu device, default eager mode')
-    parser.add_argument('--data-path', type=str, default='../data', metavar='STR',
+    parser.add_argument('--data-path', type=str, default='/tmp/data', metavar='STR',
                         help='input data path for train and test')
     parser.add_argument('--hmp', dest='is_hmp', action='store_true', help='enable hmp mode')
     parser.add_argument('--hmp-bf16', default='ops_bf16_mnist.txt', help='path to bf16 ops list in hmp O1 mode')
