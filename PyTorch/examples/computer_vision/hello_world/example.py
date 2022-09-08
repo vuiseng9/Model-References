@@ -105,8 +105,9 @@ def main():
     batch_size = 128
     lr = 0.01
     milestones = [10,15]
-    load_path = './data'
-    save_path = './checkpoints'
+    load_path = '/tmp/data'
+    save_path = '/tmp/checkpoints'
+    os.makedirs(save_path, exist_ok=True)
     lazy_mode = True
 
     ##############################################################################
