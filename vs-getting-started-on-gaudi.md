@@ -13,7 +13,18 @@ ProxyCommand "C:\Program Files\Git\mingw64\bin\connect.exe" -S proxy-dmz.intel.c
 # Setup
 We assume the instance is set up witn Habana Deep Learning Base AMI. The following steps are meant to get PyTorch up and running on Gaudi1 card.
 
-### Set up Gaudi-enabled PyTorch
+### Set up Gaudi-enabled PyTorch (1.7)
+```bash
+# Reference: https://docs.habana.ai/en/latest/Installation_Guide/Habana_Deep_Learning_AMI.html#setup-python-habana-ami
+wget -nv https://vault.habana.ai/artifactory/gaudi-installer/latest/habanalabs-installer.sh
+chmod +x habanalabs-installer.sh
+./habanalabs-installer.sh install --type pytorch --venv
+
+# to activate venv
+source habanalabs-venv/bin/activate
+```
+
+### Set up Gaudi-enabled PyTorch (1.6)
 ```bash
 git clone https://github.com/HabanaAI/Setup_and_Install
 cd Setup_and_Install/installation_scripts/PyTorch
